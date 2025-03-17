@@ -8,7 +8,7 @@ export default function StartupCard({ post }: { post: StartupCardType }) {
     const { _createdAt, views, author: { _id: authorId, name }, title, category, _id, description, image} = post;
 
     return (
-        <li className="startup-card">
+        <li className="group startup-card">
             <div className="flex-between">
                 <p className="startup-card_date">
                     {formatDate(_createdAt)}
