@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { EyeIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -32,7 +33,7 @@ export default function StartupCard({ post }: { post: StartupCardType }) {
                     </Link>
                 </div>
                 <Link href={`/user/${authorId}`}>
-                    <Image src="https://placehold.co/600x400" alt="placeholder" width={48} height={48} className="rounded-full"/>
+                    <Image src="https://placehold.co/48x48" alt="placeholder" width={48} height={48} className="rounded-full"/>
                 </Link>
             </div>
 
@@ -49,6 +50,11 @@ export default function StartupCard({ post }: { post: StartupCardType }) {
                         {category}
                     </p>
                 </Link>
+                <Button className="startup-card_btn">
+                    <Link href={`/startup/${_id}`}>
+                        Details
+                    </Link>
+                </Button>
             </div>
         </li>
     )
