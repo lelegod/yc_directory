@@ -2,10 +2,19 @@ import Ping from "@/components/Ping";
 import { formatView } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import { STARTUP_VIEWS_QUERY } from "@/sanity/lib/queries";
+import { writeClient } from "@/sanity/lib/write-client";
+import { after } from 'next/server';
 
 export default async function View({ id }: { id: string}) {
-    const post = await client.fetch(STARTUP_VIEWS_QUERY, {id});
-    
+    const { views: views } = await client
+        .withConfig({ useCdn: false })
+        .fetch(STARTUP_VIEWS_QUERY, {id});
+    after(async () => {await writeClient
+        .patch(id)
+        .set({views: views + 1})
+        .commit()
+    })
+
     return (
         <div className="view-container">
             <div className="absolute -top-2 -right-2">
@@ -13,7 +22,7 @@ export default async function View({ id }: { id: string}) {
             </div>
 
             <p className="view-text">
-                {formatView(post.views)}
+                {formatView(views)}
             </p>
         </div>
     )
