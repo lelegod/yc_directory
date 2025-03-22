@@ -1,9 +1,10 @@
-import { auth, signIn, signOut } from "@/auth"
-import Image from "next/image"
-import Link from "next/link"
+import { auth, signIn, signOut } from "@/auth";
+import Image from "next/image";
+import Link from "next/link";
 
 export default async function NavBar() {
-    const session = await auth()
+    const session = await auth();
+    
     return (
         <header className="px-5 py-3 bg-white shadow-sm font-work-sans">
             <nav className="flex justify-between items-center">
