@@ -1,8 +1,10 @@
 "use client"
 
+import { createPitch } from '@/lib/action';
 import { formSchema } from '@/lib/validation';
 import MDEditor from '@uiw/react-md-editor';
 import { Send } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useActionState, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -11,6 +13,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 
 const StartupForm = () => {
+    const router = useRouter();
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [pitch, setPitch] = useState("");
     const handleFormSubmit = async (prevState: any, formData: FormData) => {
@@ -19,12 +22,23 @@ const StartupForm = () => {
                 title: formData.get("title") as string,
                 description: formData.get("description") as string,
                 category: formData.get("category") as string,
-                link: formData.get("link") as string,
+                image: formData.get("image") as string,
                 pitch,
             }
             await formSchema.parseAsync(formValues);
 
-            console.log(formValues);
+            const result = await createPitch(prevState, formData, pitch);
+            if (result.status === 'SUCCESS') {
+                toast('SUCCESS', {
+                    description: 'Your startup pitch has been created successfully',
+                    style: {
+                        background: "green",
+                        color: "white",
+                    }
+                })
+            }
+            router.push(`/startup/${result._id}`)
+            return result;
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const fieldErrors = error.flatten().fieldErrors;
@@ -82,12 +96,12 @@ const StartupForm = () => {
                 {errors.category && <p className="startup-form_error">{errors.category}</p>}
             </div>
             <div>
-                <label htmlFor="link" className="startup-form_label">
+                <label htmlFor="image" className="startup-form_label">
                     Image URL
                 </label>
-                <Input id="link" name="link" className="startup-form_input" required placeholder="Startup Image URL"/>
+                <Input id="image" name="image" className="startup-form_input" required placeholder="Startup Image URL"/>
                 
-                {errors.link && <p className="startup-form_error">{errors.link}</p>}
+                {errors.image && <p className="startup-form_error">{errors.image}</p>}
             </div>
             <div data-color-mode="light">
                 <label htmlFor="pitch" className="startup-form_label">
