@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/sonner';
 import 'easymde/dist/easymde.min.css';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -70,6 +71,7 @@ export default function RootLayout({
         className={workSans.variable}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );
