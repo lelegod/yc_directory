@@ -21,6 +21,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           bio: bio || '',
         });
       }
+      else {
+        writeClient.createOrReplace({
+          _id: existingUser?._id,
+          _type: 'author',
+          id: id,
+          name: name,
+          username: login,
+          email: email,
+          image: image,
+          bio: bio || '',
+        });
+      }
       return true;
     },
     async jwt({ token, account, profile }) {
